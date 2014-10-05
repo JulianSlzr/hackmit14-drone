@@ -7,11 +7,39 @@ socketcli = iocli.connect('192.168.1.2', {
     port: 6000
 });
 
+var DRONE_SSID = "ardrone2_007420";
+
 // TODO: Stay alive FOREVER?
 // not sure if this is correct
 iocli.Manager.timeout(false);
 
-socketcli.on('connect', function () {
+var getSignalStrength = function(callback) {
+    wifiLocation.wifiTowers(function(err, val) {
+        var found = false;
+        for (var i = 0; i < val.length; i++) {
+            var cur = val[i];
+            if (cur.ssid == DRONE_SSID) {
+                callback(null, cur.signal_strength);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+            callback("Drone SSID not found", 1);
+    });
+}
+
+var emitSignalStrength = function() {
+    getSignalStrength(function(err, val) {
+        if (!err) {
+            socketcli.emit('client-rssi', {value: val});
+        }
+        else {
+            console.log('ahhhhh!');
+        }
+    });
+}
 
 	// Use this as a flag to upload files
 
