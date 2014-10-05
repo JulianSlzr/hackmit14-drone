@@ -41,15 +41,26 @@ var emitSignalStrength = function() {
     });
 }
 
-	// Use this as a flag to upload files
+socketcli.on('connect', function() {
 
-	var ftp = new JSFtp({
-		host: "192.168.1.1"
-	});
+    // Use this as a flag to upload files
 
-	ftp.put('data.txt', 'data.txt', function(hadError) {
-	  if (!hadError)
-	    console.log("File transferred successfully!");
-	});
+    emitSignalStrength();
 
+    socketcli.on('poll-rssi', function() {
+        emitSignalStrength();
+    });
+
+    socketcli.on('request-transfer', function() {
+        var ftp = new JSFtp({
+            host: "192.168.1.1"
+        });
+
+        ftp.put('data.txt', 'data.txt', function(hadError) {
+            if (!hadError)
+                console.log("File transferred successfully!");
+            else
+                console.log("File transfer error :(");
+        });
+    });
 });
