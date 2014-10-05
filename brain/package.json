@@ -1,0 +1,12 @@
+{
+  "name": "drone-brain",
+  "version": "0.0.0",
+  "dependencies": {
+    "socket.io": "1.0.0",
+    "jsftp": "*"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}
