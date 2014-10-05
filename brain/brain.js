@@ -1,4 +1,4 @@
-var server = require('http').Server(app);
+var server = require('http').Server();
 var io = require('socket.io')(server);
 var JSFtp = require("jsftp");
 var fs = require('fs');
@@ -10,6 +10,7 @@ io.on('connection', function (socket) {
 
 	// This executes when connected to the base station
 	socket.on('uploaded', function (data) {
+	console.log("Connected!")
 
 		var ftp = new JSFtp({
 			host: "192.168.1.1"
@@ -24,6 +25,7 @@ io.on('connection', function (socket) {
 
   		fs.readFile('plan_local.txt', function(err, data) {
   			if (err) throw err;
+
 
   			// TODO: INTERPRET FILE COMMANDS
 			console.log(data);
