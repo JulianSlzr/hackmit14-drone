@@ -1,6 +1,8 @@
 # our files
 server/plan_server.txt
 
+.DS_Store
+
 
 # Logs
 logs
