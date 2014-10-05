@@ -48,7 +48,6 @@ io.on('connection', function (socket) {
 		});
 
 		// read the file
-
 		ftp.get('plan_brain.txt', 'plan_local.txt', function(hadErr) {
 			if (hadErr)
 				console.error('There was an error retrieving the file.');
@@ -90,17 +89,16 @@ io.on('connection', function (socket) {
 
 					    	var targetAngle = curCmd.mag;
 
+					    	drone.clockwise(0.1);
+
 					    	// hard-coded in epsilon for angle variation of 5 deg
 					    	var angleEpsilon = 5;
-					    	while(Math.abs(targetAngle - curAngle) > angleEpsilon){
-
-
-
+					    	while(true){
+					    		if(Math.abs(targetAngle - curAngle) > angleEpsilon){
+					    			drone.stop();
+					    			break;
+					    		}
 					    	}
-
-			    	// get current orientation
-			    	// read off target orientation
-			    	// turn clockwise until it matches
 			    		}
 					}
 
