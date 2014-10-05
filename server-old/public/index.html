@@ -20,12 +20,10 @@
 				text-align: center
 			}
 
-	    	#thing {
+	    	#map-canvas {
 	    		height: 400px;
 	    		margin: 0 auto 20px;
 	    		padding: 0;
-	    		background: url('layout.png');
-	    		width: 750px;
 	    	}
 
 			#form {
@@ -36,8 +34,6 @@
 				margin: 30px 0;
 				text-align: center;
 			}
-
-
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhjAkFwrr8nPnVKsA9nFp8piIwyG62pSE"></script>
@@ -56,40 +52,19 @@
 
 		$(document).ready(function() {
 
-			// $('#clear').on('click', function() {
-			// 	createdPath = []
-			// 	markerPath = []
-			// 	flightPath.setMap(null);
-			// 	$('#plan').html("");
-			// });
-
-			$('#send').on('click', function() {
-				// positions = markerPath.map(function(marker) {
-				// 	return [marker.getPosition().lat(), marker.getPosition().lng()];
-				// });
-				socket.emit('upload', positions)
+			$('#clear').on('click', function() {
+				createdPath = []
+				markerPath = []
+				flightPath.setMap(null);
+				$('#plan').html("");
 			});
 
-			var canvas = document.getElementById('thing'),
-				ctx = canvas.getContext('2d'),
-				line = new Line(ctx),
-				img = new Image;
-
-			img.onload = start;
-
-			function updateLine() {
-
-			}
-
-			function start() {
-				canvas.onclick = updateLine;
-
-			    /// initial draw of image
-			    // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-			    /// listen to mouse move (or use jQuery on('mousemove') instead)
-			    // canvas.onmousemove = updateLine;
-			}
+			$('#send').on('click', function() {
+				positions = markerPath.map(function(marker) {
+					return [marker.getPosition().lat(), marker.getPosition().lng()];
+				});
+				socket.emit('upload', positions)
+			});
 
 		});
 
@@ -146,15 +121,15 @@
 
 	    function initialize() {
 
-	        // var mapOptions = {
-	        // 	center: { lat: 42.3581471, lng: -71.0950816},
-	        // 	zoom: 19
-	        // };
+	        var mapOptions = {
+	        	center: { lat: 42.3581471, lng: -71.0950816},
+	        	zoom: 19
+	        };
 
-	        // map = new google.maps.Map(document.getElementById('map-canvas'),
-	        //     mapOptions);
+	        map = new google.maps.Map(document.getElementById('map-canvas'),
+	            mapOptions);
 
-	        // makeMarkers()
+	        makeMarkers()
 	    }
 	    
 	    google.maps.event.addDomListener(window, 'load', initialize);
@@ -172,7 +147,7 @@
 
 			<div class="row">
 				<div class="col-md-8">
-					<canvas id='thing'></canvas>
+					<div id='map-canvas'></div>
 				</div>
 
 				<div class="col-md-4">

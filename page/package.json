@@ -1,8 +1,10 @@
 {
-  "name": "drone-client",
+  "name": "drone-server",
   "version": "0.0.0",
   "dependencies": {
-    "socket.io-client": "*",
+    "express": "^4.9.5",
+    "socket.io": "1.0.0",
+    "socket.io-client": "1.0.0",
     "jsftp": "*"
   },
   "devDependencies": {},

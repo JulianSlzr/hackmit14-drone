@@ -1,17 +1,13 @@
 var JSFtp = require("jsftp");
 var fs = require('fs');
-var wifiLocation = require('wifi_location');
+// var wifiLocation = require('wifi_location');
 
-var iocli = require('socket.io-client'),
-socketcli = iocli.connect('192.168.1.2', {
-    port: 6000
+var iocli = require('socket.io-client');
+var socketcli = iocli('http://192.168.1.2:6000', {
+	timeout: 99999999
 });
 
 var DRONE_SSID = "ardrone2_007420";
-
-// TODO: Stay alive FOREVER?
-// not sure if this is correct
-iocli.Manager.timeout(false);
 
 var getSignalStrength = function(callback) {
     wifiLocation.wifiTowers(function(err, val) {
@@ -43,6 +39,26 @@ var emitSignalStrength = function() {
 
 socketcli.on('connect', function() {
 
+
+	socketcli.on('comeatmebro', function() {
+
+		var ftp = new JSFtp({
+	        host: "192.168.1.1"
+	    });
+
+	    ftp.put('data.txt', 'data.txt', function(hadError) {
+	        if (!hadError)
+	        {
+	            console.log("File transferred successfully!");
+
+	            socketcli.emit('copied');
+	        }
+	        else
+	            console.log("File transfer error :(");
+	    });
+
+	});
+	return
     // Use this as a flag to upload files
 
     emitSignalStrength();
@@ -52,15 +68,7 @@ socketcli.on('connect', function() {
     });
 
     socketcli.on('request-transfer', function() {
-        var ftp = new JSFtp({
-            host: "192.168.1.1"
-        });
-
-        ftp.put('data.txt', 'data.txt', function(hadError) {
-            if (!hadError)
-                console.log("File transferred successfully!");
-            else
-                console.log("File transfer error :(");
-        });
+    
+    
     });
 });
